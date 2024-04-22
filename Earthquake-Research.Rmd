@@ -1,0 +1,18 @@
+---
+title: "Leveraging Logistic Regression to Identify Earthquake Vulnerability: A Multi-Factorial
+  Approach Considering Earthquake Data and Building Characteristics"
+author: "Stephanie Nhi Le, Ezana Seyoum, Amanuel Demissie"
+date: "2024-04-22"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+earthquakes_data <- read.delim2("./earthquakes_2010_2024.tsv")
+```
+
