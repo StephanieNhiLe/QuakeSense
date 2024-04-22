@@ -1,0 +1,15 @@
+---
+title: "Earthquake Research"
+author: "Ezana Seyoum"
+date: "2024-04-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+earthquakes.2024.04.22_15.39.20_.0500 <- read.delim2("~/GitHub/Earthquake-Research/earthquakes-2024-04-22_15-39-20_-0500.tsv")
+```
+
