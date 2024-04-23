@@ -1,0 +1,171 @@
+\documentclass[a4paper,conference]{IEEEtran}
+% This is stripped down to basically the ieee bare_conf.tex header
+\usepackage{amssymb,amsmath}
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage{hyperref}
+\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
+\hypersetup{unicode=true,
+            pdftitle={Leveraging Logistic Regression to Identify Earthquake Vulnerability: A Multi-Factorial Approach Considering Earthquake Data and Building Characteristics},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+% -- biblio. set natbib: true in pandoc for silly hacks around pandoc \cite{} vs \citep{}
+\usepackage{cite}
+\bibliographystyle{IEEEtran}
+\let\citep\cite
+% if you want the [2, 3] vs IEEE [2], [3]
+\renewcommand{\citepunct}{,\penalty\citepunctpenalty\ }
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+
+\title{Leveraging Logistic Regression to Identify Earthquake
+Vulnerability: A Multi-Factorial Approach Considering Earthquake Data
+and Building Characteristics}
+% author names and affiliations
+% use a multiple column layout for up to three different
+% affiliations
+\author{\IEEEauthorblockN{Stephanie Nhi Le}
+\IEEEauthorblockA{\textit{Math and Computer Science} \\ 
+\textit{Augustana College} \\
+Rock Island, USA \\
+\href{mailto:stephaniele20@augustana.edu}{\nolinkurl{stephaniele20@augustana.edu}}} \and 
+\IEEEauthorblockN{Ezana Seyoum}
+\IEEEauthorblockA{\textit{Math and Computer Science} \\ 
+\textit{Augustana College} \\
+Rock Island, USA \\
+\href{mailto:ezanaseyoum20@augustana.edu}{\nolinkurl{ezanaseyoum20@augustana.edu}}} \and 
+\IEEEauthorblockN{Amanuel Demissie}
+\IEEEauthorblockA{\textit{Math and Computer Science} \\ 
+\textit{Augustana College} \\
+Rock Island, USA \\
+\href{mailto:amanueldemissie22@augustana.edu}{\nolinkurl{amanueldemissie22@augustana.edu}}}}
+ 
+
+
+\date{2024-04-22 19:07:39 -0500}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\let\tightlist\relax % silly pandoc thing
+
+% --- user includes
+% Put your preamble here. Example.
+% subfigures
+\usepackage{subfig}
+% dots in filenames
+\usepackage{graphicx, grffile}
+% bold math
+\usepackage{bm}
+% colours
+\usepackage[usenames,dvipsnames]{xcolor}
+% suppress month in bibliography
+%\AtEveryBibitem{\clearfield{month}}
+%\AtEveryCitekey{\clearfield{month}}
+
+% texdef -t latex -f {cmdname} to see if cmd is already defined
+
+% Letters in fancy font (expectation, integers, reals, normal dist)
+\newcommand{\E}[1]{\operatorname{\mathbb{E}}{\left[#1\right]}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathcal{N}}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
+\usepackage{lipsum}
+\usepackage{multirow}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Earthquakes pose a significant threat to life and infrastructure. This
+study investigates the potential of logistic regression to identify
+areas and building types vulnerable to severe earthquake damage. We
+employ a multi-factorial approach, incorporating earthquake data
+(magnitude, location, depth) and building characteristics (age,
+construction material, building code compliance). The logistic
+regression model will be trained on historical earthquake events and
+associated damage data. The analysis will assess the influence of each
+factor on earthquake vulnerability and develop a probabilistic model to
+predict areas and buildings at higher risk of experiencing severe damage
+during future earthquakes. The findings of this research can be
+instrumental in earthquake risk mitigation strategies, enabling targeted
+preparedness measures and prioritizing building retrofits for improved
+earthquake resilience.
+\end{abstract}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{earthquakes\_data }\OtherTok{\textless{}{-}} \FunctionTok{read.delim2}\NormalTok{(}\StringTok{"./earthquakes\_2010\_2024.tsv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Abstract}\label{sec:abstract}
+
+\subsection{Introduction}\label{sec:introduction}
+
+\subsection{Background Research \&
+Target}\label{sec:background-research-target}
+
+\subsection{Research Question}\label{sec:research-question}
+
+\subsection{Data}\label{sec:data}
+
+\subsection{Methodology}\label{sec:methodology}
+
+\subsection{Results}\label{sec:results}
+
+\subsection{Discussion}\label{sec:discussion}
+
+\subsection{Conclusion}\label{sec:conclusion}
+
+\subsection{References}\label{sec:references}
+
+\bibliography{IEEEabrv,./library}
+
+\end{document}

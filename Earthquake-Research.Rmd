@@ -1,0 +1,129 @@
+---
+title: "Leveraging Logistic Regression to Identify Earthquake Vulnerability: A Multi-Factorial
+  Approach Considering Earthquake Data and Building Characteristics"
+author:
+- name: Stephanie Nhi Le
+  affiliation: Math and Computer Science
+  college: Augustana College
+  location: Rock Island, USA
+  email: stephaniele20@augustana.edu
+- name: Ezana Seyoum
+  affiliation: Math and Computer Science
+  college: Augustana College
+  location: Rock Island, USA
+  email: ezanaseyoum20@augustana.edu
+- name: Amanuel Demissie
+  affiliation: Math and Computer Science
+  college: Augustana College
+  location: Rock Island, USA
+  email: amanueldemissie22@augustana.edu
+date: "`r format(Sys.time(), format='%Y-%m-%d %H:%M:%S %z')`"
+abstract: |
+  Earthquakes pose a significant threat to life and infrastructure. This study investigates the potential of logistic regression to identify areas and building types vulnerable to severe earthquake damage. We employ a multi-factorial approach, incorporating earthquake data (magnitude, location, depth) and building characteristics (age, construction material, building code compliance). The logistic regression model will be trained on historical earthquake events and associated damage data. The analysis will assess the influence of each factor on earthquake vulnerability and develop a probabilistic model to predict areas and buildings at higher risk of experiencing severe damage during future earthquakes. The findings of this research can be instrumental in earthquake risk mitigation strategies, enabling targeted preparedness measures and prioritizing building retrofits for improved earthquake resilience.
+  
+  #Detail Abstract with time range, location target...
+output:
+  pdf_document: 
+    keep_tex: true
+    fig_caption: true
+    template: "lib/ieee-pandoc-template.tex"
+    includes:
+      in_header: ./preamble.tex
+    pandoc_args:
+    - "--filter"
+    - "pandoc-crossref"
+    - "--natbib"
+  html_document:
+    df_print: paged
+  word_document: default
+bibliography: IEEEabrv,./library
+header-includes:
+- \usepackage{float}
+- \usepackage{amsmath}
+- \usepackage{multicol}
+- \setlength{\columnsep}{1cm}
+- \usepackage{lipsum}
+- \usepackage{multirow}
+- "\\def\\BibTeX{{\\rm B\\kern-.05em{\\sc i\\kern-.025em b}\\kern-.08em T\\kern-.1667em\\lower.7ex\\hbox{E}\\kern-.125emX}}"
+classoption: conference
+link-citations: true
+reference-section-title: References
+papersize: a4paper
+natbib: true
+documentclass: IEEEtran
+eqnPrefix:
+- ''
+- ''
+figPrefix:
+- figure
+- figures
+tblPrefix:
+- table
+- tables
+secPrefix:
+- section
+- sections
+autoSectionLabels: true
+---
+```{r setup, include=FALSE}
+#knitr::opts_chunk$set(echo = TRUE)
+
+library(pander)
+library(knitr)
+# where the figures will be
+opts_chunk$set(fig.path='figure/')
+# code chunk options: tidy; wrap at 40 characters
+opts_knit$set(tidy=T, tidy.opts=list(width.cutoff=40))
+
+# Helpful for latex lables
+library(xtable)
+options(xtable.caption.placement='top',
+        xtable.table.placement='!t',
+        xtable.include.rownames=F,
+        xtable.comment=F)
+
+latex.figure <- function (fname, caption, label, placement='!t', floating=F, width='\\columnwidth', subfloat=length(fname) > 1, linebreaks.after=NULL) {
+    if (subfloat && length(caption) == length(fname))
+        caption <- c('', caption)
+    else if (length(caption) > 1 && length(caption) != length(fname) && length(caption) != length(fname) + 1)
+        stop("Length of filenames doesn't match length of captions (+1 if subfloat)")
+    cat(sprintf('\\begin{figure%s}[%s]%%\n\\centering%%\n',
+                ifelse(floating, '*', ''), placement))
+    figs <- sprintf('\\includegraphics[width=%s]{%s}', width, fname)
+    if (subfloat)
+        figs <- sprintf('\\subfloat[%s]{%s}', caption[2:(length(fname) + 1)], figs)
+    if (!is.null(linebreaks.after)) {
+        figs[linebreaks.after] <- paste0(figs[linebreaks.after], '\\\\')
+    }
+    figs <- paste0(figs, '%')
+    cat(figs, sep='\n')
+    # TODO should omit \caption{} if not provided for subfloat (also for normal pics)
+    cat(sprintf('\\caption{%s}%%\n\\label{%s}%%\n\\end{figure%s}\n',
+        caption[1], label, ifelse(floating, '*', '')))
+}
+
+```
+
+```{r}
+earthquakes_data <- read.delim2("./earthquakes_2010_2024.tsv")
+```
+
+## Abstract 
+
+## Introduction
+
+## Background Research & Target
+
+## Research Question
+
+## Data
+
+## Methodology
+
+## Results
+
+## Discussion
+
+## Conclusion
+
+## References
