@@ -1,0 +1,64 @@
+# Earthquake Prediction Using Machine Learning Models
+
+## Abstract
+This research investigates the use of machine learning (ML) models for predicting earthquakes and assessing their impacts. The goal is to explore whether earthquake characteristics such as magnitude, location, and depth can be used effectively to estimate the likelihood of severe damages in vulnerable regions. The study applies various ML techniques, including Linear and Logistic Regression models, on historical earthquake data from 1995 to 2024. Exploratory Data Analysis (EDA) provides valuable insights into the relationships between the features, guiding the selection of appropriate models for prediction. Results indicate that non-linear models may offer superior performance compared to linear models.
+
+## Introduction
+Earthquakes are among the most devastating natural disasters, leading to significant loss of life and property. Predicting the impact of earthquakes can enhance preparedness and mitigation strategies. The research question guiding this study is: *How effectively can a predictive model estimate the likelihood of severe damage based on earthquake characteristics?* The aim is to develop a reliable machine learning model to predict the impact of earthquakes, using historical data that includes earthquake magnitudes, depth, and geographic locations.
+
+## Literature Review
+Khodaverdian et al. (2021) reviewed the state of ML in earthquake prediction, noting that while progress has been made, challenges such as data scarcity and model generalization remain. Gono et al. (2021) investigated earthquake forecasting using supervised classifiers and emphasized the importance of feature selection in improving model accuracy. Liu et al. (2021) focused on seismic vulnerability assessments and discussed the need for integrating energy release and geological factors into predictive models. These studies demonstrate the increasing application of machine learning in earthquake prediction and highlight its potential for improving forecasting accuracy.
+
+## Methodology
+
+### Data Collection
+The dataset used in this study is sourced from the NOAA National Centers for Environmental Information (NCEI), covering earthquakes that occurred between 1995 and 2024. The dataset includes critical parameters such as:
+- Magnitude
+- Location (latitude and longitude)
+- Depth
+- Occurrence of tsunamis
+
+### Data Preprocessing
+Preprocessing steps include handling missing values, normalizing location data, and categorizing earthquake magnitudes into bins. The binary target variable, "Damage," is created using custom functions that assign a value of 1 if damages were reported and 0 otherwise. Feature selection focuses on key variables such as magnitude, depth, latitude, and longitude.
+
+### Exploratory Data Analysis (EDA)
+Several visualization techniques were employed during EDA:
+- **Histograms**: To understand the distribution of earthquake depths and geographic locations.
+- **Scatter Plots**: To explore relationships between magnitude and depth.
+- **Heatmaps**: To identify regions with frequent seismic activity, particularly on the West Coast of the United States.
+
+Key findings from the EDA include:
+1. A concentration of earthquakes around the equatorial region, particularly along the Pacific Ring of Fire.
+2. A positive correlation between earthquake magnitude and impact severity, especially when tsunamis are involved.
+
+### Machine Learning Models
+
+#### Linear Regression
+Linear regression was initially used to predict the magnitude of earthquakes based on their depth. However, analysis showed that a simple linear model is not suitable due to the non-linear relationships present in the data. The high variability of earthquake magnitudes at similar depths suggests that additional factors, such as tectonic characteristics, must be considered.
+
+- **Mean Squared Error (MSE)**: The MSE of 0.89 indicates poor model fit, highlighting the need for more complex models.
+  
+#### Logistic Regression
+Logistic regression was employed to predict whether an earthquake would cause significant damage. The binary target variable was defined as either "damage" or "no damage." Key features used in the model were magnitude, depth, latitude, longitude, and tsunami occurrence.
+
+- **Training and Evaluation**: The model was trained on historical earthquake data, and its performance was evaluated using precision, recall, and F1 scores.
+- **Findings**: Logistic regression performed better than linear regression, indicating that non-linear relationships better capture the dynamics of earthquake impact.
+
+## Results
+The analysis demonstrates that earthquake magnitude is a strong predictor of damage likelihood, but other factors, such as depth and geographic location, also play a significant role. 
+
+- **Positive Correlation**: Earthquake magnitude correlates positively with impact severity, with higher magnitudes being more likely to cause severe damage.
+- **Tsunami as an Indicator**: Earthquakes accompanied by tsunamis are often associated with higher magnitudes and tend to result in more damage.
+- **Limitations**: Logistic regression shows some predictive power, but the presence of outliers and the complexity of seismic events suggest that additional variables and more sophisticated models (e.g., neural networks) could improve prediction accuracy.
+
+## Discussion
+Although linear models provide some insight into the relationships between earthquake characteristics, they are insufficient for accurate predictions due to the complex, non-linear nature of seismic events. Logistic regression offers improved predictive performance by accounting for the binary nature of damage occurrence, yet further improvements could be made by incorporating more advanced techniques such as random forests or deep learning models.
+
+## Conclusion
+This study confirms that earthquake characteristics such as magnitude, location, and depth can be used to predict the likelihood of severe damage using machine learning models. However, due to the complex nature of earthquake events, non-linear models are recommended for future work. The insights gained from this research can aid in improving disaster preparedness and developing better risk mitigation strategies.
+
+### References
+1. Khodaverdian, L., & Safakish, E. A. (2021). Machine Learning for Earthquake Prediction: A Review (2017–2021). *Arabian Journal of Geosciences*, 14(78).
+2. Gono, R., & Jasińska, E. (2021). Analysis of Earthquake Forecasting in India Using Supervised Machine Learning Classifiers. *Sustainability*, 13(2), 971.
+3. Khosravikia, F., et al. (2021). Earthquake Damage and Rehabilitation Intervention Prediction Using Machine Learning. *Journal of Building Engineering*, 39.
+4. Liu, Z., et al. (2021). Smart Earthquake Engineering: Machine Learning for Seismic Vulnerability Assessment. *Smart Cities*, 4.

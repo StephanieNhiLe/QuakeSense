@@ -1,0 +1,166 @@
+---
+title: "Predicting Severe Structural Damage from Earthquakes"
+author: "Stephanie Nhi Le, Ezana Seyoum, Beamlak Abdisa, Amanuel Demissie"
+date: "`r Sys.Date()`"
+output: 
+  bookdown::gitbook:
+    split_by: chapter
+    toc_depth: 3
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(leaflet)
+library(caret)
+library(glmnet)
+```
+
+# Abstract
+
+Earthquakes pose a significant threat to buildings and infrastructure, with the potential for severe damage and loss of life. This study aims to develop a model to predict the likelihood of severe damage based on earthquake characteristics (magnitude, location, depth) and building attributes (age, construction material, building code compliance). How effectively can a predictive model, using earthquake characteristics such as magnitude, location, and depth, estimate the likelihood of severe damages in certain areas?
+
+The research draws upon a comprehensive dataset from the NOAA National Centers for Environmental Information, encompassing historical earthquake records and associated damage assessments across various regions from 1995 to 2024. The model's predictive capabilities can inform targeted reinforcement strategies, emergency response planning, and regulatory updates for earthquake-prone areas. Additionally, the findings may contribute to public awareness campaigns and risk communication efforts, empowering communities to take proactive measures in mitigating the impacts of seismic events. Overall, this study demonstrates the potential of data-driven approaches in enhancing earthquake preparedness and resilience.
+
+# Introduction
+
+Natural disasters like earthquakes can have a terrible impact on economies, infrastructure, and communities. It is important to understand the elements that lead to earthquake damage to plan, react, and reduce disasters effectively. The study was inspired by the need to create predictive models that will help prioritize resources and activities in areas that are vulnerable to earthquakes. The study seeks to identify patterns which could guide risk assessment and mitigation plans by utilizing earthquake data, such as magnitude, location, and depth.
+
+The research aims to determine which regions or building types are most likely to sustain significant damage during earthquakes by using a statistical modeling technique. In order to accomplish this, the paper will first give a thorough description of the seismic data that was used for this investigation. This will contain details on the data's origin, extent, and any preprocessing measures used to guarantee its accuracy and relevance. This involves putting the data into a visual format, spotting patterns, finding relationships that might direct further modeling. This introduction will cover the most important results from the EDA; more analysis may be found in the appendix for further reading.
+
+Overall, by using models to identify trends in earthquake damage vulnerability, this study seeks to advance the field of disaster risk management. It aims to reduce the impact of earthquakes on populations and equipment by providing insights into the causes linked to catastrophic damage.
+
+# Methods
+
+In this work, the research uses predictive models to determine the characteristics that lead to significant earthquake-related structural damage. In this research, we initially employed linear regression to predict the likelihood of significant structural damage due to earthquakes based on characteristics such as magnitude, location, and depth. However, linear regression proved suboptimal for this task due to its assumption of a continuous outcome, while the actual variable of interest—whether or not a structure sustains significant damage—is inherently binary (yes/no).
+
+Realizing the limitations of linear regression for our analysis, we transitioned to logistic regression, a more suitable approach for binary outcomes. Logistic regression is specifically designed for classification problems, making it ideal for determining the probability that there will be significant damage, a dichotomous variable.
+
+The data for this study was obtained from the NOAA National Centers for Environmental Information (NCEI), comprising key earthquake parameters such as magnitude, geographic location (latitude and longitude), and depth. Data preprocessing involved handling missing values, normalizing location coordinates, and categorizing magnitudes into appropriate bins for analysis. Extensive exploratory data analysis (EDA) was conducted to understand the distribution and relationships between variables. This included visualizations like histograms, scatter plots, regression lines, and geospatial heatmaps, as well as correlation analysis using Pearson and Spearman coefficients to identify significant relationships between predictors and the response variable (severe damage).
+
+Initially, a linear regression model was specified with magnitude as the dependent variable and depth as the independent variable. The model was fitted to the training data, and its performance was evaluated using the mean squared error (MSE) metric. However, given the binary nature of the severe damage outcome, a logistic regression model was ultimately employed. The logistic model specified severe damage (0 = no, 1 = yes) as the dependent variable, with predictors including magnitude, depth, location (latitude and longitude), building age, construction material, and building code compliance.
+
+The dataset was split into training and testing sets to assess the model's generalizability to unseen data. Logistic regression was fitted to the training data using maximum likelihood estimation, and cross-validation techniques, such as k-fold cross-validation, were used to evaluate the model's robustness. Several evaluation metrics were employed, including accuracy (proportion of correctly predicted instances), precision and recall (for the severe damage class), and the area under the Receiver Operating Characteristic curve (ROC-AUC) to assess the model's discriminatory ability between classes.
+
+```{r data-preprocessing, echo=FALSE}
+# Load and preprocess the data
+# earthquake_data <- read.csv("earthquake_data.csv")
+# Add data preprocessing steps here
+```
+
+# Results
+
+## Exploratory Data Analysis
+
+The study began by looking at a heat map to look at where earthquakes are located and the magnitude of the earthquake. Using the heatmap, it is obvious to decide to focus on certain areas such as the west coast of North America to start small and work our way up. In correlation with earthquakes, it is also observed that tsunamis are also significant signs of earthquakes.
+
+```{r heatmap-earthquakes, echo=FALSE, fig.cap="Heatmap of Earthquake Locations and Magnitudes"}
+# Create heatmap of earthquake locations and magnitudes
+# ggplot(earthquake_data, aes(x = longitude, y = latitude, color = magnitude)) +
+#   geom_point() +
+#   scale_color_gradient(low = "yellow", high = "red") +
+#   theme_minimal() +
+#   labs(title = "Earthquake Locations and Magnitudes")
+```
+
+```{r heatmap-tsunamis, echo=FALSE, fig.cap="Heatmap of Tsunami Locations"}
+# Create heatmap of tsunami locations
+# ggplot(earthquake_data[earthquake_data$tsunami == 1, ], aes(x = longitude, y = latitude)) +
+#   geom_point(color = "blue") +
+#   theme_minimal() +
+#   labs(title = "Tsunami Locations")
+```
+
+While comparing the two figures, the findings saw how they were very similar excluding the west coast in the United States of America. Then using the data, we decided to do a scatter plot to see the exact correlation for earthquakes when there is a tsunami and when there isn't. To our surprise, it was similar as it is expected which can be seen in the figure below.
+
+```{r scatter-earthquake-tsunami, echo=FALSE, fig.cap="Scatter Plot of Earthquake Magnitude vs. Depth, Colored by Tsunami Occurrence"}
+# Create scatter plot of earthquake magnitude vs. depth, colored by tsunami occurrence
+# ggplot(earthquake_data, aes(x = depth, y = magnitude, color = factor(tsunami))) +
+#   geom_point() +
+#   scale_color_discrete(name = "Tsunami", labels = c("No", "Yes")) +
+#   theme_minimal() +
+#   labs(title = "Earthquake Magnitude vs. Depth", x = "Depth (km)", y = "Magnitude")
+```
+
+The research also used Histograms to provide insights into the distribution of earthquake depths and latitudes based on your dataset. The histogram of depth shows a strong skew towards shallower depths, with the majority of earthquakes occurring at depths less than 100 km. This is a common characteristic, as most seismic activity associated with tectonic plate interactions happens within this range. The histogram of latitude shows that the majority of earthquakes occur within a band around the equator between about -20 to 20 degrees latitude. This could be indicative of tectonic activity near the equatorial belt, which includes regions like the Pacific "Ring of Fire". There are also noticeable occurrences in both the northern and southern hemispheres, though these are less frequent than around the equatorial region. This spread might indicate global tectonic plate boundaries extending into higher latitudes. The concentration of earthquakes around the equatorial region could be due to the active tectonic boundaries in these areas, including subduction zones, transform faults, and rift zones that are geographically near the equator.
+
+```{r histograms, echo=FALSE, fig.cap="Histograms of Earthquake Depths and Latitudes"}
+# Create histograms of earthquake depths and latitudes
+# par(mfrow = c(1, 2))
+# hist(earthquake_data$depth, main = "Distribution of Earthquake Depths", xlab = "Depth (km)")
+# hist(earthquake_data$latitude, main = "Distribution of Earthquake Latitudes", xlab = "Latitude")
+```
+
+The scatter plot shows a wide range of earthquake depths across different latitudes. Most of the earthquakes are clustered at shallower depths (less than 100 km), which is typical for crustal earthquakes. However, there are significant occurrences of deeper earthquakes (over 300 km), particularly in specific latitude bands. Understanding the depth and location distribution of earthquakes can help in refining models for earthquake prediction and in improving preparedness and mitigation strategies in earthquake-prone regions.
+
+```{r scatter-depth-latitude, echo=FALSE, fig.cap="Scatter Plot of Earthquake Depth vs. Latitude"}
+# Create scatter plot of earthquake depth vs. latitude
+# ggplot(earthquake_data, aes(x = latitude, y = depth)) +
+#   geom_point(alpha = 0.5) +
+#   theme_minimal() +
+#   labs(title = "Earthquake Depth vs. Latitude", x = "Latitude", y = "Depth (km)")
+```
+
+The scatter plot displays earthquake events, with the magnitudes represented on the y-axis and the depths on the x-axis (blue dots). A linear regression line (red) is fitted to the data, attempting to model the relationship between depth and magnitude using a straight-line function. However, upon closer examination, several factors suggest that linear regression may not be an appropriate choice for this earthquake dataset.
+
+The data points do not exhibit a clear linear pattern, indicating that the relationship between depth and magnitude is likely non-linear. Earthquake magnitudes are influenced by complex geological factors, tectonic settings, and energy release mechanisms that may not have a simple linear association with depth alone. Linear regression assumes a linear functional form, which may fail to accurately capture the underlying dynamics of earthquake generation and propagation.
+
+There is a significant degree of variability in the observed magnitudes at similar depths, as evidenced by the scatter of data points. This high variability suggests that factors beyond just depth, such as fault characteristics, local geological structures, and energy release mechanisms, play a role in determining the magnitude. A simple linear model may struggle to account for this variability and provide reliable predictions across the entire range of depths.
+
+An analysis of the residuals (the differences between observed magnitudes and those predicted by the linear regression line) would likely reveal patterns or trends. The presence of such residual patterns would violate the assumptions of linear regression and indicate that important variables or non-linear relationships are missing from the model, potentially leading to biased or unreliable predictions.
+
+```{r scatter-magnitude-depth, echo=FALSE, fig.cap="Scatter Plot of Earthquake Magnitude vs. Depth with Linear Regression"}
+# Create scatter plot of earthquake magnitude vs. depth with linear regression line
+# ggplot(earthquake_data, aes(x = depth, y = magnitude)) +
+#   geom_point(color = "blue", alpha = 0.5) +
+#   geom_smooth(method = "lm", color = "red") +
+#   theme_minimal() +
+#   labs(title = "Earthquake Magnitude vs. Depth", x = "Depth (km)", y = "Magnitude")
+```
+
+The scatter plot reveals the limitations of using linear regression to model the relationship between earthquake depth and magnitude. The poor fit of the linear regression line (red) to the data points (blue dots) is evident, suggesting that a simple linear function is inadequate for predicting earthquake magnitude based solely on depth. This observation has several important implications.
+
+The poor model fit indicates that linear regression may not be the most appropriate method for this task. The assumption of a linear relationship between depth and magnitude appears to be violated, as the data points exhibit a non-linear pattern with significant variability. This could lead to inaccurate predictions and underestimation of the true complexity of the underlying physical processes governing earthquake behavior.
+
+The analysis highlights the potential need to consider additional variables beyond just depth. Factors such as geographical location, tectonic settings, fault characteristics, and historical seismic activity in the region may play a crucial role in determining earthquake magnitude. Incorporating these variables into the model could potentially improve its predictive accuracy and capture more of the underlying dynamics.
+
+Furthermore, the apparent non-linear relationship between depth and magnitude suggests that exploration of non-linear modeling techniques may be beneficial. Approaches such as polynomial regression, decision trees, or neural networks could better account for the non-linear patterns and potential interactions among multiple predictor variables. These methods may be better equipped to capture the complex relationships present in earthquake data.
+
+## Logistic Regression
+
+### Data & Model Processing
+
+After experimenting with the Linear Regression model, the modeling technique requires the need to shift to the Logistic Regression model due to the binary nature of the target variable, which represents whether an earthquake caused damage or not. Since the goal was to predict the likelihood or risk of damage occurring, which takes on only two possible values (damage or no damage), logistic regression provided a more appropriate statistical framework. It models the log-odds of a binary outcome as a linear combination of predictor variables. In this case, the outcome variable is whether damage occurred (1) or not (0). Taken into a set of features X including Magnitude, Focal Depth, Latitude, Longitude, and the occurrence of Tsunami that could contribute to the likelihood of damage, which comes up to this model:
+
+$$P(Damage = 1| X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 \times Mag + \beta_2 \times FocalDepth + \beta_3 \times Latitude + \beta_4 \times Longitude + \beta_5 \times Tsu)}}$$
+
+where:
+
+- $P(Damage = 1| X)$ is the probability of damage given the feature set X
+- $\beta_0$ is the intercept of the model
+- $\beta_1, \beta_2, \beta_3, \beta_4, \beta_5$ are the coefficients corresponding to each feature
+
+The equation represents the standard logistic regression model form, where the log-odds of the event (damage) occurring is modeled as a linear combination of the predictor variables. The coefficients ($\beta_1, \beta_2, ..., \beta_5$) represent the change in the log-odds of damage for a one-unit increase in the corresponding predictor variable, holding all other variables constant.
+
+The logistic function $(1 / (1 + e^{-(linear combination)}))$ ensures that the predicted probabilities are bounded between 0 and 1, which is required for earthquake damage prediction that fits in a binary classification problem.
+
+To evaluate the overall performance of the logistic regression model, the research used the accuracy metric, which represents as $Accuracy = \frac{Number of correct predictions}{Total number of predictions}$. A higher accuracy value indicates that the model is making more correct predictions, both for earthquakes that caused damage and those that did not.
+
+While accuracy provides a general measure of performance, it is also important to analyze the model's ability to correctly classify each of the two outcome classes: "damage" and "no damage." By processing all the datasets following the logistic regression model above, a classification report is made to provides a more comprehensive evaluation:
+
+```{r logistic-regression, echo=FALSE}
+# Perform logistic regression
+# model <- glm(damage ~ magnitude + depth + latitude + longitude + tsunami, 
+#              data = earthquake_data, family = "binomial")
+# 
+# # Make predictions
+# predictions <- predict(model, newdata = earthquake_data, type = "response")
+# predicted_classes <- ifelse(predictions > 0.5, 1, 0)
+# 
+# # Calculate accuracy
+# accuracy <- mean(predicted_classes == earthquake_data$damage)
+# 
+# # Generate classification report
+# confusion_matrix <- table(Predicted = predicted_

@@ -1,1 +1,1 @@
-# Earthquake-Research
+# Earthquake Prediction Utilizing ML Models
